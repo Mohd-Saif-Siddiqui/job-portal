@@ -17,3 +17,8 @@ CLAUDE.md
 
 # Uploaded resumes (runtime data)
 backend/uploads/
+
+# Local secrets (Neon connection strings etc.)
+.env.local
+.env.*.local
+.neon
