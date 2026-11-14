@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: jobportal-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-jobportal}
+      POSTGRES_USER: ${POSTGRES_USER:-jobportal}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobportal}
+    ports:
+      # Host port 5433 (not 5432) so it doesn't clash with a Postgres installed on Windows.
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

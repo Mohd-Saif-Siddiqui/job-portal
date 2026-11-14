@@ -1,0 +1,12 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:${POSTGRES_PORT:5433}/${POSTGRES_DB:jobportal}
+    username: ${POSTGRES_USER:jobportal}
+    password: ${POSTGRES_PASSWORD:jobportal}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false

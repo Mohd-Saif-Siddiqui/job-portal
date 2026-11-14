@@ -1,0 +1,16 @@
+# Node / frontend
+node_modules/
+frontend/dist/
+
+# Java / backend
+backend/target/
+*.class
+
+# Env & IDE
+.env
+.idea/
+.vscode/
+.DS_Store
+
+# Claude Code project memory
+CLAUDE.md
