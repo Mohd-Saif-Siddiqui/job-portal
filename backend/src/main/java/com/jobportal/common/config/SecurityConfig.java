@@ -49,7 +49,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/register", "/api/auth/login", "/api/seeker/ping").permitAll()
                 .requestMatchers("/api/seeker/**").hasRole("SEEKER")
                 .requestMatchers("/api/recruiter/**").hasRole("RECRUITER")
-                .anyRequest().authenticated());
+                .requestMatchers("/api/**").authenticated()
+                // everything else is the React app's files (html/js/css), which are public
+                .anyRequest().permitAll());
         return http.build();
     }
 

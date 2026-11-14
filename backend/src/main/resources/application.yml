@@ -1,17 +1,30 @@
 server:
-  port: 8080
+  # Hosting platforms (Render, etc.) tell the app which port to use via PORT.
+  port: ${PORT:8080}
+  # Trust the proxy's X-Forwarded-* headers so the app knows it is served over https.
+  forward-headers-strategy: framework
   servlet:
     session:
       timeout: 8h
       cookie:
         http-only: true
         same-site: lax
+        # Set SERVER_SERVLET_SESSION_COOKIE_SECURE=true when served over https.
+        secure: ${COOKIE_SECURE:false}
 
 spring:
   datasource:
+    # Local defaults point at the Docker Postgres. In production set SPRING_DATASOURCE_URL,
+    # SPRING_DATASOURCE_USERNAME and SPRING_DATASOURCE_PASSWORD (Spring reads them automatically).
     url: jdbc:postgresql://localhost:${POSTGRES_PORT:5433}/${POSTGRES_DB:jobportal}
     username: ${POSTGRES_USER:jobportal}
     password: ${POSTGRES_PASSWORD:jobportal}
+    hikari:
+      # Small pool for free-tier databases; recycle connections before the host drops idle ones.
+      maximum-pool-size: ${DB_POOL_SIZE:5}
+      minimum-idle: 0
+      max-lifetime: 300000
+      connection-timeout: 30000
   jpa:
     hibernate:
       ddl-auto: update
@@ -22,7 +35,7 @@ spring:
       max-request-size: 6MB
 
 app:
-  # Where uploaded resumes are stored (relative to the folder you run the backend from).
-  upload-dir: uploads
-  # Inserts demo skills, jobs and two demo accounts when the database is empty. Turn off in production.
-  seed-demo-data: true
+  # Where uploaded resumes are stored (relative to the folder the backend runs from).
+  upload-dir: ${UPLOAD_DIR:uploads}
+  # Inserts demo skills, jobs and two demo accounts when the database is empty. Turn off for real use.
+  seed-demo-data: ${SEED_DEMO_DATA:true}

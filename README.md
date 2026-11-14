@@ -39,3 +39,18 @@ Turn the demo data off with `app.seed-demo-data: false` in `backend/src/main/res
 
 ## Not built yet
 Email notifications, admin moderation, analytics, company pages, AI resume-to-job matching, database migrations (Flyway), automated backend tests.
+
+## Deploy for free (Render + Neon)
+The `Dockerfile` builds the React app and the Spring Boot backend into **one** image, and Spring Boot serves both. One service means the login cookie just works (same domain, no CORS).
+
+1. **Database (Neon):** create a free project at neon.tech. From its connection details note the host, database name, user and password.
+2. **Push the code to GitHub** (Render deploys from a repo).
+3. **App (Render):** New → Blueprint → pick the repo (it reads `render.yaml`). Fill in the three environment variables:
+   - `SPRING_DATASOURCE_URL` = `jdbc:postgresql://<neon-host>/<database>?sslmode=require`  (JDBC format, **without** user:password in it)
+   - `SPRING_DATASOURCE_USERNAME` = your Neon user
+   - `SPRING_DATASOURCE_PASSWORD` = your Neon password
+4. Deploy. The first build takes a few minutes. Open the `*.onrender.com` URL and log in with the demo accounts (they are created on the first start).
+
+Free-tier notes: the service sleeps after 15 minutes without traffic (the next visit takes about a minute to wake it), and uploaded resumes are lost when the service restarts or redeploys. Set `SEED_DEMO_DATA=false` to skip demo data.
+
+Test the same image locally: `docker build -t jobportal .` then run it with the three `SPRING_DATASOURCE_*` variables pointing at a Postgres database.

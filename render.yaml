@@ -1,0 +1,19 @@
+# Render "Blueprint": describes the one web service. The database is on Neon (not on Render).
+services:
+  - type: web
+    name: job-portal
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/seeker/ping
+    envVars:
+      # Fill these three in the Render dashboard (values come from your Neon project).
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: SEED_DEMO_DATA
+        value: "true"
